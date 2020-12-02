@@ -1,0 +1,24 @@
+# permissions for end users to edit cordanodes.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cordanode-editor-role
+rules:
+- apiGroups:
+  - corda.orangesys.io
+  resources:
+  - cordanodes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - corda.orangesys.io
+  resources:
+  - cordanodes/status
+  verbs:
+  - get

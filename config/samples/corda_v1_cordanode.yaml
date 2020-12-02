@@ -1,0 +1,6 @@
+apiVersion: corda.orangesys.io/v1
+kind: CordaNode
+metadata:
+  name: party2
+spec:
+  image: redis

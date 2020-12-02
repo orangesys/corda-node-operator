@@ -1,0 +1,7 @@
+domain: orangesys.io
+repo: orangesys.io/cordanode
+resources:
+- group: corda
+  kind: CordaNode
+  version: v1
+version: "2"
