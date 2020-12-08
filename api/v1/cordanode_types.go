@@ -28,7 +28,9 @@ type CordaNodeSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	Image string `json:"image"`
+	WebImage string `json:"webImage"`
+	APPImage string `json:"appImage"`
+	NodeInfo string `json:"nodeinfo"`
 }
 
 // CordaNodeStatus defines the observed state of CordaNode

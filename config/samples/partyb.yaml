@@ -1,0 +1,6 @@
+apiVersion: corda.orangesys.io/v1
+kind: CordaNode
+metadata:
+  name: partyb
+spec:
+  image: nginx
