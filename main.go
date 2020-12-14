@@ -26,8 +26,8 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	cordav1 "orangesys.io/cordanode/api/v1"
-	"orangesys.io/cordanode/controllers"
+	cordav1 "github.com/orangesys/corda-node-operator/api/v1"
+	"github.com/orangesys/corda-node-operator/controllers"
 	// +kubebuilder:scaffold:imports
 )
 

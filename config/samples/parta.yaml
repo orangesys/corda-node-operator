@@ -2,65 +2,7 @@ apiVersion: corda.orangesys.io/v1
 kind: CordaNode
 metadata:
   name: partya
-  labels:
-    app: partya
+  labels: 
+    user: partya
 spec:
-  appImage: nginx
-  webImage: redis
-  nodeinfo: |
-    dataSourceProperties {
-    dataSource {
-        password="partya"
-        url="jdbc:postgresql://db-test-tblocksign.postgres.database.azure.com:5432/partyb"
-        user="partyb@db-test-tblocksign"
-    }
-    dataSourceClassName="org.postgresql.ds.PGSimpleDataSource"
-    }
-    database {
-      transactionIsolationLevel=READ_COMMITTED
-      schema="public"
-      runMigration=true
-    }
-    enterpriseConfiguration {
-        messagingServerConnectionConfiguration = "CONTINUOUS_RETRY"
-    }
-    detectPublicIp=false
-    devMode=false
-    myLegalName="O=PartyB,L=Tokyo,C=JP"
-    p2pAddress="partyb-p2p:11002"
-    rpcSettings {
-        address="0.0.0.0:10003"
-        adminAddress="0.0.0.0:10023"
-    }
-    security {
-        authService {
-            dataSource {
-                type=INMEMORY
-                users=[
-                    {
-                        password="partyb"
-                        permissions=[
-                            ALL
-                        ]
-                        user=root
-                    }
-                ]
-            }
-        }
-    }
-    sshd {
-        port=22022
-    }
-    sslHandshakeTimeout = 1800000
-    networkServices {
-        doormanURL="http://20.46.189.211:10000"
-        networkMapURL="http://20.48.69.204:10000"
-    }
-    flowOverrides={
-        overrides=[
-            {
-                initiator="com.r3.dr.ledgersync.app.flows.ReconcileWithPartyFlowInitiator"
-                responder="com.tcontract.flows.ReconciliationFlowResponder"
-            }
-        ]
-    }
+  myLegalName: O=Partya,L=Tokyo,C=JP

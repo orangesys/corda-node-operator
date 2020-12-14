@@ -2,5 +2,7 @@ apiVersion: corda.orangesys.io/v1
 kind: CordaNode
 metadata:
   name: partyb
+  labels: 
+    user: partyb
 spec:
-  image: nginx
+  myLegalName: O=Partyb,L=Tokyo,C=JP

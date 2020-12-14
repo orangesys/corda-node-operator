@@ -1,8 +1,9 @@
 package utils
 
 import (
+	cordav1 "github.com/orangesys/corda-node-operator/api/v1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	cordav1 "orangesys.io/cordanode/api/v1"
 )
 
 //GenMetaInfo ...

@@ -30,7 +30,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	cordav1 "orangesys.io/cordanode/api/v1"
+	cordav1 "github.com/orangesys/corda-node-operator/api/v1"
 	// +kubebuilder:scaffold:imports
 )
 

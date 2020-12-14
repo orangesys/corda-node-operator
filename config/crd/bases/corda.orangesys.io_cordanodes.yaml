@@ -34,19 +34,19 @@ spec:
         spec:
           description: CordaNodeSpec defines the desired state of CordaNode
           properties:
-            appImage:
-              type: string
-            nodeinfo:
-              type: string
-            webImage:
+            myLegalName:
               type: string
           required:
-          - appImage
-          - nodeinfo
-          - webImage
+          - myLegalName
           type: object
         status:
           description: CordaNodeStatus defines the observed state of CordaNode
+          properties:
+            external_ip:
+              description: 'INSERT ADDITIONAL STATUS FIELD - define observed state
+                of cluster Important: Run "make" to regenerate code after modifying
+                this file'
+              type: string
           type: object
       type: object
   version: v1

@@ -4,20 +4,15 @@ import (
 	"fmt"
 
 	corev1 "k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 
-	cordav1 "orangesys.io/cordanode/api/v1"
+	cordav1 "github.com/orangesys/corda-node-operator/api/v1"
 )
 
 //GenService ...
 func GenService(cr *cordav1.CordaNode) *corev1.Service {
-	parser := NewNodeInfoParser(cr)
-	p2pPort, err := parser.GetP2PAddressPort()
-	if err != nil {
-		log.Error(err, "Parsing p2p port error, will use default 11002", "Request.Namespace", cr.Namespace, "Request.Name", cr.ObjectMeta.Name)
-		p2pPort = 11002
-	}
 	service := &corev1.Service{
 		TypeMeta: GenMetaInfo("Service", "core/v1"),
 		ObjectMeta: GenObjMetaInfo(cr.ObjectMeta.Name, cr.Namespace, map[string]string{
@@ -27,21 +22,21 @@ func GenService(cr *cordav1.CordaNode) *corev1.Service {
 		}),
 		Spec: corev1.ServiceSpec{
 			Selector: cr.Labels,
-			Type:     corev1.ServiceTypeClusterIP,
+			Type:     corev1.ServiceTypeLoadBalancer,
 			Ports: []corev1.ServicePort{
 				{
 					Name:       "p2p",
 					Protocol:   corev1.ProtocolTCP,
-					Port:       p2pPort,
-					TargetPort: intstr.FromInt(int(p2pPort)),
+					Port:       10200,
+					TargetPort: intstr.FromInt(int(10200)),
 				}, {
-					Name:       "rest",
+					Name:       "ssh",
 					Protocol:   corev1.ProtocolTCP,
-					Port:       10055,
-					TargetPort: intstr.FromInt(int(10055)),
+					Port:       2222,
+					TargetPort: intstr.FromInt(int(2222)),
 				},
 				{
-					Name:       "metrics",
+					Name:       "braid",
 					Protocol:   corev1.ProtocolTCP,
 					Port:       8080,
 					TargetPort: intstr.FromInt(int(8080)),
@@ -51,6 +46,15 @@ func GenService(cr *cordav1.CordaNode) *corev1.Service {
 	}
 	AddOwnerRefToObj(service, AsOwner(cr))
 	return service
+}
+
+//GetServce ...
+func GetServce(cr *cordav1.CordaNode) (*v1.Service, error) {
+	service, err := GetClientSet().CoreV1().Services(cr.Namespace).Get(cr.ObjectMeta.Name, metav1.GetOptions{})
+	if err != nil {
+		return nil, err
+	}
+	return service, nil
 }
 
 //CreateService ...

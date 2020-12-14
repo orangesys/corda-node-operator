@@ -28,15 +28,14 @@ type CordaNodeSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	WebImage string `json:"webImage"`
-	APPImage string `json:"appImage"`
-	NodeInfo string `json:"nodeinfo"`
+	MyLegalName string `json:"myLegalName"`
 }
 
 // CordaNodeStatus defines the observed state of CordaNode
 type CordaNodeStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+	ExternalIP string `json:"external_ip,omitempty"`
 }
 
 // +kubebuilder:object:root=true

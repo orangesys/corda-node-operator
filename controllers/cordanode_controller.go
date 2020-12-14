@@ -18,14 +18,17 @@ package controllers
 
 import (
 	"context"
+	"time"
 
 	"github.com/go-logr/logr"
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	cordav1 "orangesys.io/cordanode/api/v1"
-	"orangesys.io/cordanode/utils"
+	cordav1 "github.com/orangesys/corda-node-operator/api/v1"
+	"github.com/orangesys/corda-node-operator/utils"
 )
 
 // CordaNodeReconciler reconciles a CordaNode object
@@ -45,7 +48,7 @@ const (
 
 func (r *CordaNodeReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	ctx := context.Background()
-	_ = r.Log.WithValues("CordaNode", req.NamespacedName)
+	log := r.Log.WithValues("CordaNode", req.NamespacedName)
 
 	node := &cordav1.CordaNode{}
 
@@ -57,9 +60,25 @@ func (r *CordaNodeReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	}
 
 	if node.ObjectMeta.DeletionTimestamp.IsZero() {
-		utils.CreateNodeInfoConfigMap(node)
-		utils.CreateCertsSecret(node)
 		utils.CreateService(node)
+		svc, err := utils.GetServce(node)
+		if err != nil {
+			if errors.IsNotFound(err) {
+				log.Info("Wating corda service create.")
+				return reconcile.Result{RequeueAfter: time.Second * 5}, nil
+			}
+			return reconcile.Result{}, err
+		}
+		if len(svc.Status.LoadBalancer.Ingress) == 0 {
+			log.Info("Wating cordaNode External IP create.")
+			return reconcile.Result{RequeueAfter: time.Second * 5}, nil
+		}
+		node.Status.ExternalIP = svc.Status.LoadBalancer.Ingress[0].IP
+
+		if err := utils.CreateNodeInfoConfigMap(node); err != nil {
+			return ctrl.Result{}, err
+		}
+		utils.CreateCertsSecret(node)
 		utils.CreateCordaNodeDeployment(node)
 	}
 
