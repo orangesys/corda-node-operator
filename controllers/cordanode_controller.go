@@ -28,7 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	cordav1 "github.com/orangesys/corda-node-operator/api/v1"
-	"github.com/orangesys/corda-node-operator/utils"
+	"github.com/orangesys/corda-node-operator/pkg/utils"
 )
 
 // CordaNodeReconciler reconciles a CordaNode object

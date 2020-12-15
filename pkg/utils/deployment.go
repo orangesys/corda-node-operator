@@ -25,7 +25,7 @@ func GenCordaNodeDeployment(cr *cordav1.CordaNode) *appv1.Deployment {
 				Spec: corev1.PodSpec{
 					Containers: []corev1.Container{{
 						Name:            "app",
-						Image:           "corda-node:latest",
+						Image:           "dockerxucheng/corda-node:latest",
 						ImagePullPolicy: corev1.PullIfNotPresent,
 						Resources: corev1.ResourceRequirements{
 							Requests: corev1.ResourceList{
